@@ -14,46 +14,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --------------------------------------------------
-            CSS Variables & Dynamic Color Palette
-        -------------------------------------------------- */
         :root {
-            /* Light Theme Variables */
             --bg-body: #fdfbfd;
-            --bg-surface: rgba(255, 255, 255, 0.65);
-            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.88);
             --text-primary: #0f172a;
-            --text-secondary: #475569;
+            --text-secondary: #334155;
             --border-color: rgba(226, 232, 240, 0.8);
             --primary-purple: #8b5cf6;
             --primary-indigo: #6366f1;
             --accent-glow: rgba(139, 92, 246, 0.15);
-            --shadow-sm: 0 4px 20px -2px rgba(139, 92, 246, 0.06);
-            --shadow-hover: 0 20px 35px -8px rgba(139, 92, 246, 0.22);
+            --shadow-sm: 0 4px 20px -2px rgba(139, 92, 246, 0.1);
+            --shadow-hover: 0 20px 35px -8px rgba(139, 92, 246, 0.25);
 
-            /* Navbar Settings */
             --nav-bg: rgba(15, 23, 42, 0.88);
             --nav-text: #ffffff;
             --nav-text-sub: #cbd5e1;
             --nav-border: rgba(255, 255, 255, 0.1);
             --nav-hover: #38bdf8;
 
-            /* Dark/Slate Styling for Stats Bar */
-            --stats-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --stats-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%);
             --stats-text: #ffffff;
             --stats-subtext: #94a3b8;
             --stats-border: rgba(255, 255, 255, 0.1);
             --stats-icon-bg: rgba(139, 92, 246, 0.2);
+
+            --hero-overlay: linear-gradient(135deg, rgba(253, 251, 253, 0.88) 0%, rgba(241, 245, 249, 0.82) 100%);
+            --section-overlay-light: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88));
         }
 
-        /* Dark Theme Variables */
         [data-theme="dark"] {
             --bg-body: #090d16;
-            --bg-surface: rgba(15, 23, 42, 0.7);
-            --bg-card: rgba(15, 23, 42, 0.85);
+            --bg-surface: rgba(15, 23, 42, 0.85);
+            --bg-card: rgba(15, 23, 42, 0.9);
             --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --text-secondary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
             --accent-glow: rgba(139, 92, 246, 0.25);
             --shadow-sm: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
             --shadow-hover: 0 20px 35px -8px rgba(139, 92, 246, 0.35);
@@ -64,14 +60,16 @@
             --nav-border: rgba(255, 255, 255, 0.08);
             --nav-hover: #818cf8;
 
-            --stats-bg: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --stats-bg: linear-gradient(135deg, rgba(2, 6, 23, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
             --stats-text: #ffffff;
             --stats-subtext: #94a3b8;
             --stats-border: rgba(255, 255, 255, 0.08);
             --stats-icon-bg: rgba(139, 92, 246, 0.25);
+
+            --hero-overlay: linear-gradient(135deg, rgba(9, 13, 22, 0.92) 0%, rgba(15, 23, 42, 0.88) 100%);
+            --section-overlay-light: linear-gradient(rgba(9, 13, 22, 0.9), rgba(9, 13, 22, 0.9));
         }
 
-        /* Global Reset & Base Styling */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -92,17 +90,20 @@
             overflow-x: hidden;
         }
 
-        /* Fixed Section Offsets for Navigation Header Adjustment */
         section {
-            scroll-margin-top: 80px; /* Navbar එකේ උස නිසා Section එක උඩින් වැහෙන එක වලක්වයි */
-            min-height: calc(100vh - 80px); /* Screen එකට සාපේක්ෂව සම්පූර්ණ Viewport එකක් ගනී */
+            scroll-margin-top: 80px;
+            min-height: calc(100vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 0;
+            padding: 60px 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
         }
 
-        /* Background Animated Orbs */
         .ambient-bg {
             position: fixed;
             top: 0;
@@ -118,7 +119,7 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.5;
+            opacity: 0.35;
             animation: floatOrb 22s ease-in-out infinite alternate;
         }
 
@@ -154,17 +155,17 @@
             100% { transform: translate(-40px, 70px) scale(0.95); }
         }
 
-        [data-theme="dark"] .orb { opacity: 0.22; }
+        [data-theme="dark"] .orb { opacity: 0.18; }
 
-        /* Container Layout */
         .container {
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Typography */
         .text-gradient {
             background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             -webkit-background-clip: text;
@@ -176,7 +177,7 @@
             align-items: center;
             gap: 6px;
             padding: 5px 14px;
-            background: rgba(139, 92, 246, 0.12);
+            background: rgba(139, 92, 246, 0.15);
             color: #8b5cf6;
             font-size: 11.5px;
             font-weight: 700;
@@ -184,7 +185,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
-            border: 1px solid rgba(139, 92, 246, 0.25);
+            border: 1px solid rgba(139, 92, 246, 0.3);
             backdrop-filter: blur(8px);
         }
 
@@ -196,7 +197,7 @@
         .section-header h2 {
             font-size: 32px;
             color: var(--text-primary);
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             font-weight: 800;
             letter-spacing: -0.8px;
         }
@@ -209,7 +210,7 @@
             margin: 0 auto;
         }
 
-        /* NAVBAR & LOGO TAGLINE */
+        /* NAVBAR & LOGO */
         .navbar {
             position: sticky;
             top: 0;
@@ -283,13 +284,52 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 24px;
+        }
+
+        .nav-search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-search-input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--nav-border);
+            padding: 8px 14px 8px 36px;
+            border-radius: 20px;
+            color: var(--nav-text);
+            font-size: 13.5px;
+            font-family: inherit;
+            outline: none;
+            width: 170px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-search-input::placeholder {
+            color: var(--nav-text-sub);
+            opacity: 0.7;
+        }
+
+        .nav-search-input:focus {
+            width: 210px;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.45);
+        }
+
+        .nav-search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--nav-text-sub);
+            font-size: 13px;
+            pointer-events: none;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 32px;
+            gap: 28px;
         }
 
         .nav-links a {
@@ -342,10 +382,36 @@
             border-color: var(--nav-hover);
         }
 
-        /* HERO SECTION */
+        /* SECTION SPECIFIC BACKGROUND IMAGES WITH OVERLAYS */
         .hero {
             text-align: center;
             position: relative;
+            background-image: var(--hero-overlay), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80');
+        }
+
+        #products {
+            background-image: var(--section-overlay-light), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1920&q=80');
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #about {
+            background-image: var(--section-overlay-light), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80');
+        }
+
+        #services {
+            background-image: var(--section-overlay-light), url('https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1920&q=80');
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #technologies {
+            background-image: var(--section-overlay-light), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');
+        }
+
+        #contact {
+            background-image: var(--section-overlay-light), url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1920&q=80');
+            border-top: 1px solid var(--border-color);
         }
 
         .hero-content {
@@ -354,7 +420,7 @@
         }
 
         .hero h1 {
-            font-size: 44px;
+            font-size: 46px;
             font-weight: 800;
             line-height: 1.15;
             letter-spacing: -1.2px;
@@ -412,6 +478,7 @@
             align-items: center;
             gap: 10px;
             background: var(--bg-card);
+            backdrop-filter: blur(8px);
             color: var(--text-primary);
             padding: 12px 28px;
             border-radius: 30px;
@@ -433,7 +500,7 @@
             list-style: none;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
@@ -442,7 +509,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 18px;
-            padding: 22px 20px;
+            padding: 24px 20px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
             display: flex;
@@ -501,23 +568,18 @@
             font-size: 13.5px;
         }
 
-        /* 1. PRODUCTS SECTION */
-        #products {
-            background: var(--bg-surface);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
+        /* PRODUCTS SECTION CARDS */
         .product-card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            position: relative;
         }
 
         .product-card:hover {
@@ -528,14 +590,14 @@
 
         .product-image-container {
             width: 100%;
-            height: 160px;
+            height: 170px;
             background: rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             border-bottom: 1px solid var(--border-color);
-            padding: 12px;
+            padding: 30px 10px 10px 10px;
             position: relative;
         }
 
@@ -550,8 +612,107 @@
             transform: scale(1.08);
         }
 
+        /* COMPACT TOP BADGES */
+        .badge-container {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .animated-badge {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(4px);
+        }
+
+        .badge-bestseller {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            animation: pulseGold 2s infinite;
+        }
+
+        .badge-hotdeal {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulseRed 1.8s infinite;
+        }
+
+        .badge-discount {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            animation: pulseGreen 2s infinite;
+        }
+
+        .badge-warranty {
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+        }
+
+        @keyframes pulseGold {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* QUICK VIEW OVERLAY */
+        .quick-view-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .product-card:hover .quick-view-overlay {
+            opacity: 1;
+        }
+
+        .quick-view-btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f172a;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .quick-view-btn {
+            transform: translateY(0);
+        }
+
+        /* PRODUCT INFO AREA */
         .product-info {
-            padding: 18px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -559,37 +720,53 @@
         }
 
         .product-tag {
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 800;
             color: #8b5cf6;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 4px;
+            letter-spacing: 0.6px;
+            margin-bottom: 2px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
         }
 
         .product-title {
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-weight: 700;
         }
 
         .product-description {
             color: var(--text-secondary);
-            font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.4;
+            font-size: 12.5px;
+            margin-bottom: 10px;
+            line-height: 1.35;
             flex-grow: 1;
         }
 
+        /* PRICE DISPLAY */
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
         .product-price {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 800;
             color: #10b981;
-            margin-bottom: 12px;
+        }
+
+        .old-price {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #ef4444;
+            text-decoration: line-through;
+            opacity: 0.85;
         }
 
         .btn-inquire {
@@ -597,13 +774,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 9px 16px;
+            padding: 8px 14px;
             background: #25D366;
             color: #ffffff;
             border-radius: 25px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12.5px;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
         }
 
@@ -613,10 +790,194 @@
             box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
         }
 
-        /* 2. ABOUT US & STATS BAR */
+        /* NO RESULTS FOUND STYLING */
+        .no-results-box {
+            display: none;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border-radius: 18px;
+            border: 1px dashed var(--border-color);
+            margin: 10px 0;
+        }
+
+        .no-results-box i {
+            font-size: 42px;
+            color: #8b5cf6;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .no-results-box h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .no-results-box p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        /* PRODUCT PREVIEW MODAL STYLING */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            max-width: 750px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 16px;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .modal-image-box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .modal-image-box img {
+            max-width: 100%;
+            max-height: 260px;
+            object-fit: contain;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+        }
+
+        .modal-image-box:hover img {
+            transform: scale(1.28);
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15));
+        }
+
+        .modal-content-box {
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .modal-price-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .modal-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .modal-old-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ef4444;
+            text-decoration: line-through;
+        }
+
+        .modal-description {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .modal-specs {
+            list-style: none;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-specs li {
+            font-size: 12.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .modal-specs li i {
+            color: #8b5cf6;
+            font-size: 14px;
+        }
+
+        /* ABOUT US & STATS BAR */
         .stats-horizontal-bar {
             margin-top: 30px;
             background: var(--stats-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--stats-border);
             border-radius: 20px;
             padding: 20px 30px;
@@ -674,18 +1035,12 @@
             background: var(--stats-border);
         }
 
-        /* 3. SERVICES SECTION */
-        #services {
-            background: var(--bg-surface);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
+        /* SERVICES CONTACT BOX */
         .contact-box {
             text-align: center;
-            padding: 6px 10px;
-            background: linear-gradient(135deg, #0f172a 0%, #2e1065 100%);
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(46, 16, 101, 0.9) 100%);
+            backdrop-filter: blur(12px);
             border-radius: 20px;
             color: #ffffff;
             box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.4);
@@ -694,8 +1049,8 @@
             align-items: center;
             justify-content: center;
             gap: 14px;
-            margin-top: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .contact-box h3 {
@@ -731,13 +1086,7 @@
             box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
         }
 
-        /* 4. CONTACT SECTION */
-        #contact {
-            background: var(--bg-surface);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border-color);
-        }
-
+        /* CONTACT CARDS */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -827,14 +1176,17 @@
             padding: 25px 24px;
             font-size: 13.5px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 2;
         }
 
-        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .nav-search-input { width: 140px; }
+            .nav-search-input:focus { width: 170px; }
+        }
+
         @media (max-width: 768px) {
-            section {
-                min-height: auto;
-                padding: 50px 0;
-            }
+            section { min-height: auto; padding: 50px 0; background-attachment: scroll; }
             .container { padding: 0 18px; }
             .hero h1 { font-size: 32px; }
             .section-header h2 { font-size: 26px; }
@@ -844,12 +1196,13 @@
             .stat-nav-item { width: 100%; }
             .floating-wa { bottom: 20px; right: 20px; width: 48px; height: 48px; font-size: 24px; }
             .brand-tagline { font-size: 8px; }
+            .modal-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+            .modal-image-box { border-right: none; border-bottom: 1px solid var(--border-color); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Light-Purple Background Orbs -->
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -870,6 +1223,11 @@
             </a>
             
             <div class="nav-right">
+                <div class="nav-search-box">
+                    <i class="fa-solid fa-magnifying-glass nav-search-icon"></i>
+                    <input type="text" class="nav-search-input" placeholder="Search products...">
+                </div>
+
                 <ul class="nav-links">
                     <li><a href="#products">Products</a></li>
                     <li><a href="#about">About Us</a></li>
@@ -906,7 +1264,7 @@
         </div>
     </section>
 
-    <!-- 1. PRODUCTS SECTION -->
+    <!-- PRODUCTS SECTION -->
     <section id="products">
         <div class="container">
             <div class="section-header">
@@ -916,46 +1274,132 @@
             </div>
 
             <div class="card-grid">
-                <!-- Royal 15kg -->
-                <div class="product-card">
+                <!-- Product 1: Royal 15kg -->
+                <div class="product-card" 
+                     data-title="Royal - 15kg Scale" 
+                     data-price="Rs. 18,700" 
+                     data-oldprice="Rs. 22,000"
+                     data-image="download.jpg" 
+                     data-description="High precision licensed electronic weighing scale specially crafted for daily retail, grocery, and general commercial usage."
+                     data-specs="15kg Max Capacity | High Precision Sensor | Dual Display Panels | Built-in Rechargeable Battery | 1 Year Full Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2018,700).">
+                    
                     <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount">
+                                <i class="fa-solid fa-percent"></i> 15% OFF
+                            </span>
+                            <span class="animated-badge badge-bestseller">
+                                <i class="fa-solid fa-crown"></i> BEST SELLER
+                            </span>
+                            <span class="animated-badge badge-warranty">
+                                <i class="fa-solid fa-shield-check"></i> 1Y WARRANTY
+                            </span>
+                        </div>
                         <img src="download.jpg" alt="Royal-15kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
                     </div>
                     <div class="product-info">
                         <div>
                             <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
                             <h3 class="product-title">Royal - 15kg</h3>
                             <p class="product-description">Licensed scale for accurate daily commercial & retail weighing needs with dual display.</p>
-                            <div class="product-price">Rs. 19,000</div>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 18,700</span>
+                                <span class="old-price">Rs. 22,000</span>
+                            </div>
                         </div>
-                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2019,000)." target="_blank" class="btn-inquire">
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2018,700)." target="_blank" class="btn-inquire">
                             <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
                         </a>
                     </div>
                 </div>
 
-                <!-- Solid 150kg -->
-                <div class="product-card">
+                <!-- Product 2: Solid 150kg -->
+                <div class="product-card" 
+                     data-title="SOLID - 150kg Industrial Scale" 
+                     data-price="Rs. 95,400" 
+                     data-oldprice="Rs. 106,000"
+                     data-image="converted.jpg" 
+                     data-description="Heavy-duty industrial platform scale built with durable alloy steel and robust load-cell for maximum stability and heavy-capacity weighing."
+                     data-specs="150kg Max Capacity | Alloy Steel Platform | Weather-proof Housing | 120 Hours Battery Backup | 1 Year Full Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,400).">
+                    
                     <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount">
+                                <i class="fa-solid fa-percent"></i> 10% OFF
+                            </span>
+                            <span class="animated-badge badge-hotdeal">
+                                <i class="fa-solid fa-fire"></i> HOT DEAL
+                            </span>
+                            <span class="animated-badge badge-warranty">
+                                <i class="fa-solid fa-shield-check"></i> 1Y WARRANTY
+                            </span>
+                        </div>
                         <img src="converted.jpg" alt="SOLID-150kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
                     </div>
                     <div class="product-info">
                         <div>
                             <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
                             <h3 class="product-title">SOLID - 150kg</h3>
                             <p class="product-description">Licensed heavy-duty scale engineered for high-capacity industrial weighing.</p>
-                            <div class="product-price">Rs. 95,000</div>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 95,400</span>
+                                <span class="old-price">Rs. 106,000</span>
+                            </div>
                         </div>
-                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,000)." target="_blank" class="btn-inquire">
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,400)." target="_blank" class="btn-inquire">
                             <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
                         </a>
                     </div>
                 </div>
+
+                <!-- No Results Found Message Box -->
+                <div class="no-results-box" id="noResults">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i>
+                    <h3>No Results Found</h3>
+                    <p>We couldn't find any scale matching your search query. Please try searching another term.</p>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- 2. ABOUT US SECTION -->
+    <!-- PRODUCT PREVIEW MODAL -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-image-box">
+                <img src="" id="modalImg" alt="Product Image">
+            </div>
+            <div class="modal-content-box">
+                <div>
+                    <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Certified Precision Scale</span>
+                    <h3 class="modal-title" id="modalTitle">Product Title</h3>
+                    <div class="modal-price-box">
+                        <span class="modal-price" id="modalPrice">Rs. 0</span>
+                        <span class="modal-old-price" id="modalOldPrice">Rs. 0</span>
+                    </div>
+                    <p class="modal-description" id="modalDesc">Product description here...</p>
+                    
+                    <ul class="modal-specs" id="modalSpecs">
+                        <!-- Dynamic Specifications -->
+                    </ul>
+                </div>
+                <a href="#" id="modalWaBtn" target="_blank" class="btn-inquire" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+                    <i class="fa-brands fa-whatsapp"></i> Order Now via WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT US SECTION -->
     <section id="about">
         <div class="container">
             <div class="section-header">
@@ -966,31 +1410,24 @@
 
             <div class="card-grid">
                 <div class="card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-award"></i>
-                    </div>
+                    <div class="icon-box"><i class="fa-solid fa-award"></i></div>
                     <h3>30+ Years Experience</h3>
                     <p>Three decades of expertise in supplying, repairing, and calibrating precision electronic scales.</p>
                 </div>
 
                 <div class="card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-bullseye"></i>
-                    </div>
+                    <div class="icon-box"><i class="fa-solid fa-bullseye"></i></div>
                     <h3>Zero Error Precision</h3>
                     <p>Engineered for maximum accuracy to protect your business profits and customer trust.</p>
                 </div>
 
                 <div class="card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-handshake"></i>
-                    </div>
+                    <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
                     <h3>Islandwide Service</h3>
                     <p>Dependable support and rapid maintenance services provided across Sri Lanka.</p>
                 </div>
             </div>
 
-            <!-- Horizontal Stats Bar -->
             <div class="stats-horizontal-bar">
                 <div class="stat-nav-item">
                     <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
@@ -1023,7 +1460,7 @@
         </div>
     </section>
 
-    <!-- 3. SERVICES SECTION -->
+    <!-- SERVICES SECTION -->
     <section id="services">
         <div class="container">
             <div class="section-header">
@@ -1062,7 +1499,7 @@
         </div>
     </section>
 
-    <!-- 4. TECHNOLOGIES SECTION -->
+    <!-- TECHNOLOGIES SECTION -->
     <section id="technologies">
         <div class="container">
             <div class="section-header">
@@ -1093,7 +1530,7 @@
         </div>
     </section>
 
-    <!-- 5. CONTACT SECTION -->
+    <!-- CONTACT SECTION -->
     <section id="contact">
         <div class="container">
             <div class="section-header">
@@ -1117,10 +1554,17 @@
                     <span class="btn-action">Send Message</span>
                 </a>
 
+                <a href="mailto:wmtscale@gmail.com" class="contact-card">
+                    <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                    <h3>Email Support</h3>
+                    <div class="contact-val">wmtscale@gmail.com</div>
+                    <span class="btn-action">Send Email</span>
+                </a>
+
                 <div class="contact-card">
                     <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
                     <h3>Main Showroom</h3>
-                    <div class="contact-val">Colombo, Sri Lanka</div>
+                    <div class="contact-val">Ambanpola, Sri Lanka</div>
                     <span class="btn-action">Visit Us</span>
                 </div>
             </div>
@@ -1132,12 +1576,12 @@
         <p>&copy; 2026 NEATMAX SCALE (WMT Scales). All Rights Reserved.</p>
     </footer>
 
-    <!-- Theme Switcher JavaScript Logic -->
+    <!-- JavaScript Logic -->
     <script>
+        // Theme Toggle Functionality
         const themeToggleBtn = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
 
-        // Check for stored preference or set default light theme
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1154,6 +1598,90 @@
                 document.documentElement.setAttribute('data-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
                 themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // Search Bar Functionality
+        const searchInput = document.querySelector('.nav-search-input');
+        const productCards = document.querySelectorAll('.product-card');
+        const productsSection = document.getElementById('products');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            if (searchTerm.length > 0) {
+                productsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                const description = card.querySelector('.product-description').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+
+        // Product Preview Modal Popup Logic
+        const modal = document.getElementById('productModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalOldPrice = document.getElementById('modalOldPrice');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalSpecs = document.getElementById('modalSpecs');
+        const modalWaBtn = document.getElementById('modalWaBtn');
+
+        productCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-inquire')) return;
+
+                const title = card.getAttribute('data-title');
+                const price = card.getAttribute('data-price');
+                const oldprice = card.getAttribute('data-oldprice');
+                const image = card.getAttribute('data-image');
+                const desc = card.getAttribute('data-description');
+                const specs = card.getAttribute('data-specs').split('|');
+                const waUrl = card.getAttribute('data-wa');
+
+                modalTitle.textContent = title;
+                modalPrice.textContent = price;
+                modalOldPrice.textContent = oldprice ? oldprice : '';
+                modalImg.src = image;
+                modalDesc.textContent = desc;
+                modalWaBtn.href = waUrl;
+
+                modalSpecs.innerHTML = '';
+                specs.forEach(spec => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${spec.trim()}`;
+                    modalSpecs.appendChild(li);
+                });
+
+                modal.classList.add('active');
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
             }
         });
     </script>
