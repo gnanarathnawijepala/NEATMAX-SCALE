@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEATMAX SCALE</title>
+    <link rel="icon" href="ss.png">
+    
+    <!-- FontAwesome Link for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --------------------------------------------------
+            CSS Variables & Dynamic Color Palette
+        -------------------------------------------------- */
+        :root {
+            /* Light Theme Variables */
+            --bg-body: #fdfbfd;
+            --bg-surface: rgba(255, 255, 255, 0.65);
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --primary-purple: #8b5cf6;
+            --primary-indigo: #6366f1;
+            --accent-glow: rgba(139, 92, 246, 0.15);
+            --shadow-sm: 0 4px 20px -2px rgba(139, 92, 246, 0.06);
+            --shadow-hover: 0 20px 35px -8px rgba(139, 92, 246, 0.22);
+
+            /* Navbar Settings */
+            --nav-bg: rgba(15, 23, 42, 0.88);
+            --nav-text: #ffffff;
+            --nav-text-sub: #cbd5e1;
+            --nav-border: rgba(255, 255, 255, 0.1);
+            --nav-hover: #38bdf8;
+
+            /* Dark/Slate Styling for Stats Bar */
+            --stats-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --stats-text: #ffffff;
+            --stats-subtext: #94a3b8;
+            --stats-border: rgba(255, 255, 255, 0.1);
+            --stats-icon-bg: rgba(139, 92, 246, 0.2);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-body: #090d16;
+            --bg-surface: rgba(15, 23, 42, 0.7);
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(139, 92, 246, 0.25);
+            --shadow-sm: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 20px 35px -8px rgba(139, 92, 246, 0.35);
+
+            --nav-bg: rgba(9, 13, 22, 0.92);
+            --nav-text: #f8fafc;
+            --nav-text-sub: #94a3b8;
+            --nav-border: rgba(255, 255, 255, 0.08);
+            --nav-hover: #818cf8;
+
+            --stats-bg: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --stats-text: #ffffff;
+            --stats-subtext: #94a3b8;
+            --stats-border: rgba(255, 255, 255, 0.08);
+            --stats-icon-bg: rgba(139, 92, 246, 0.25);
+        }
+
+        /* Global Reset & Base Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fixed Section Offsets for Navigation Header Adjustment */
+        section {
+            scroll-margin-top: 80px; /* Navbar එකේ උස නිසා Section එක උඩින් වැහෙන එක වලක්වයි */
+            min-height: calc(100vh - 80px); /* Screen එකට සාපේක්ෂව සම්පූර්ණ Viewport එකක් ගනී */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        /* Background Animated Orbs */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.5;
+            animation: floatOrb 22s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(192, 132, 252, 0.45) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .orb-2 {
+            top: 35%;
+            right: -15%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            bottom: -10%;
+            left: 20%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+            animation-delay: -14s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 40px) scale(1.1); }
+            100% { transform: translate(-40px, 70px) scale(0.95); }
+        }
+
+        [data-theme="dark"] .orb { opacity: 0.22; }
+
+        /* Container Layout */
+        .container {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Typography */
+        .text-gradient {
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            background: rgba(139, 92, 246, 0.12);
+            color: #8b5cf6;
+            font-size: 11.5px;
+            font-weight: 700;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            backdrop-filter: blur(8px);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .section-header .sub-title {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* NAVBAR & LOGO TAGLINE */
+        .navbar {
+            position: sticky;
+            top: 0;
+            height: 75px;
+            background: var(--nav-bg);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--nav-border);
+            z-index: 1000;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--nav-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-tagline {
+            font-size: 9px;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--nav-text-sub);
+            font-weight: 600;
+            font-size: 14.5px;
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--nav-hover);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--nav-hover);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--nav-border);
+            color: var(--nav-text);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.18);
+            color: var(--nav-hover);
+            border-color: var(--nav-hover);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.2px;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtagline {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #8b5cf6;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+
+        /* GRID SYSTEM & CARDS */
+        .card-grid {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 22px 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.4);
+        }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 13.5px;
+        }
+
+        /* 1. PRODUCTS SECTION */
+        #products {
+            background: var(--bg-surface);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px;
+            position: relative;
+        }
+
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.08);
+        }
+
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-tag {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #8b5cf6;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-title {
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .product-price {
+            font-size: 19px;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 12px;
+        }
+
+        .btn-inquire {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 16px;
+            background: #25D366;
+            color: #ffffff;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+        }
+
+        .btn-inquire:hover {
+            background: #1ebc57;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* 2. ABOUT US & STATS BAR */
+        .stats-horizontal-bar {
+            margin-top: 30px;
+            background: var(--stats-bg);
+            border: 1px solid var(--stats-border);
+            border-radius: 20px;
+            padding: 20px 30px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .stat-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--stats-icon-bg);
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid var(--stats-border);
+        }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--stats-text);
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--stats-subtext);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 2px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 35px;
+            background: var(--stats-border);
+        }
+
+        /* 3. SERVICES SECTION */
+        #services {
+            background: var(--bg-surface);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contact-box {
+            text-align: center;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, #0f172a 0%, #2e1065 100%);
+            border-radius: 20px;
+            color: #ffffff;
+            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-box h3 {
+            font-size: 21px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .contact-box p {
+            color: #cbd5e1;
+            margin: 0;
+            font-size: 14px;
+            max-width: 550px;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: #ffffff;
+            padding: 12px 28px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 40px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebc57;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        /* 4. CONTACT SECTION */
+        #contact {
+            background: var(--bg-surface);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 24px 20px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .contact-card .contact-val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #8b5cf6;
+            margin: 10px 0;
+        }
+
+        .btn-action {
+            display: inline-block;
+            padding: 6px 18px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #8b5cf6;
+            border: 1px solid #8b5cf6;
+            border-radius: 30px;
+        }
+
+        .contact-card:hover .btn-action {
+            background: #8b5cf6;
+            color: #ffffff;
+        }
+
+        /* FLOATING WHATSAPP BUTTON */
+        .floating-wa {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 28px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            animation: pulseGlow 2s infinite;
+        }
+
+        .floating-wa:hover {
+            transform: scale(1.1);
+            background-color: #1ebc57;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #090d16;
+            color: #64748b;
+            text-align: center;
+            padding: 25px 24px;
+            font-size: 13.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            section {
+                min-height: auto;
+                padding: 50px 0;
+            }
+            .container { padding: 0 18px; }
+            .hero h1 { font-size: 32px; }
+            .section-header h2 { font-size: 26px; }
+            .nav-links { display: none; }
+            .stats-horizontal-bar { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .stat-divider { display: none; }
+            .stat-nav-item { width: 100%; }
+            .floating-wa { bottom: 20px; right: 20px; width: 48px; height: 48px; font-size: 24px; }
+            .brand-tagline { font-size: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Light-Purple Background Orbs -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <div class="logo-text-wrapper">
+                    <span class="brand-name">NEATMAX SCALE</span>
+                    <span class="brand-tagline">Neat Accuracy | Max Durability</span>
+                </div>
+            </a>
+            
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#technologies">Technologies</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+                
+                <button class="theme-toggle-btn" id="themeToggle" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/94778122654?text=Hello!%20I%20need%20assistance%20with%20weighing%20scales." class="floating-wa" target="_blank" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="badge"><i class="fa-solid fa-star"></i> Precision & Trust Since 1995</span>
+                <h1>High-Precision Electronic <br><span class="text-gradient">Weighing Solutions</span></h1>
+                <div class="hero-subtagline">Neat Accuracy | Max Durability</div>
+                <p>Leading Sri Lanka's industrial & commercial sector with licensed, high-accuracy weighing instruments and guaranteed repair services.</p>
+                <div class="hero-btns">
+                    <a href="#products" class="btn-primary"><i class="fa-solid fa-cart-shopping"></i> View Products</a>
+                    <a href="#contact" class="btn-secondary"><i class="fa-solid fa-phone"></i> Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. PRODUCTS SECTION -->
+    <section id="products">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fa-solid fa-tag"></i> Licensed Scales</span>
+                <h2>Our Featured Collection</h2>
+                <p class="sub-title">Explore our range of licensed electronic weighing instruments designed for high precision and durability.</p>
+            </div>
+
+            <div class="card-grid">
+                <!-- Royal 15kg -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="download.jpg" alt="Royal-15kg Scale">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">Royal - 15kg</h3>
+                            <p class="product-description">Licensed scale for accurate daily commercial & retail weighing needs with dual display.</p>
+                            <div class="product-price">Rs. 19,000</div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2019,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Solid 150kg -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="converted.jpg" alt="SOLID-150kg Scale">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">SOLID - 150kg</h3>
+                            <p class="product-description">Licensed heavy-duty scale engineered for high-capacity industrial weighing.</p>
+                            <div class="product-price">Rs. 95,000</div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ABOUT US SECTION -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fa-solid fa-building-user"></i> Trusted Partner</span>
+                <h2>Why Choose WMT Scales?</h2>
+                <p class="sub-title">With over 30 years of industry leadership, we deliver zero-error electronic weighing systems across Sri Lanka.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h3>30+ Years Experience</h3>
+                    <p>Three decades of expertise in supplying, repairing, and calibrating precision electronic scales.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3>Zero Error Precision</h3>
+                    <p>Engineered for maximum accuracy to protect your business profits and customer trust.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <h3>Islandwide Service</h3>
+                    <p>Dependable support and rapid maintenance services provided across Sri Lanka.</p>
+                </div>
+            </div>
+
+            <!-- Horizontal Stats Bar -->
+            <div class="stats-horizontal-bar">
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Scale Models</span>
+                    </div>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">12K+</span>
+                        <span class="stat-label">Happy Clients</span>
+                    </div>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">1 Year</span>
+                        <span class="stat-label">Full Warranty</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SERVICES SECTION -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fa-solid fa-screwdriver-wrench"></i> Expert Care</span>
+                <h2>Our Specialized Services</h2>
+                <p class="sub-title">We provide precise calibration and fast repair services for all types of electronic weighing scales.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Expert Repairs</h3>
+                    <p>Technical issues diagnosed and accurately fixed with a 100% service guarantee.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3>Precision Calibration</h3>
+                    <p>On-site fine-tuning to ensure absolute compliance with government legal metrology standards.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h3>On-Demand Support</h3>
+                    <p>Fast doorstep delivery and on-site technical inspection for commercial facilities.</p>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <h3>Need Scale Repairs or Calibration?</h3>
+                <p>Reach out directly to our senior technician team via WhatsApp for instant support.</p>
+                <a href="https://wa.me/94778122654?text=Hello!%20I%20need%20repair/calibration%20support%20for%20my%20scale." target="_blank" class="btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Chat with Technician
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TECHNOLOGIES SECTION -->
+    <section id="technologies">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fa-solid fa-microchip"></i> Modern Hardware</span>
+                <h2>Advanced Weighing Tech</h2>
+                <p class="sub-title">High-sensitivity strain gauges and microcontrollers driving reliable measurements.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>High-Precision Load Cells</h3>
+                    <p>Resilient alloy steel sensors delivering micro-gram accuracy under continuous heavy loads.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-battery-full"></i></div>
+                    <h3>Long-Life Battery Backup</h3>
+                    <p>Built-in rechargeable power supply supporting up to 120 hours of continuous operations.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon-box"><i class="fa-solid fa-desktop"></i></div>
+                    <h3>Dual LED Displays</h3>
+                    <p>Bright, anti-glare display panels facing both operator and buyer for complete transparency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CONTACT SECTION -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge"><i class="fa-solid fa-envelope"></i> Get In Touch</span>
+                <h2>Contact Us</h2>
+                <p class="sub-title">Have questions about our scale inventory or technical servicing? We're here to help.</p>
+            </div>
+
+            <div class="contact-grid">
+                <a href="tel:+94778122654" class="contact-card">
+                    <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+                    <h3>Phone Support</h3>
+                    <div class="contact-val">+94 77 812 2654</div>
+                    <span class="btn-action">Call Now</span>
+                </a>
+
+                <a href="https://wa.me/94778122654" target="_blank" class="contact-card">
+                    <div class="icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3>WhatsApp Direct</h3>
+                    <div class="contact-val">+94 77 812 2654</div>
+                    <span class="btn-action">Send Message</span>
+                </a>
+
+                <div class="contact-card">
+                    <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                    <h3>Main Showroom</h3>
+                    <div class="contact-val">Colombo, Sri Lanka</div>
+                    <span class="btn-action">Visit Us</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 NEATMAX SCALE (WMT Scales). All Rights Reserved.</p>
+    </footer>
+
+    <!-- Theme Switcher JavaScript Logic -->
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // Check for stored preference or set default light theme
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+    </script>
+
+</body>
+</html>
