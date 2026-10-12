@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEATMAX SCALE</title>
+    <link rel="icon" href="ss.png">
+    
+    <!-- FontAwesome Link for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #fdfbfd;
+            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: rgba(226, 232, 240, 0.9);
+            
+            /* Ocean Blue & Teal Theme Variables */
+            --primary-purple: #00509d;
+            --primary-indigo: #008080;
+            --accent-glow: rgba(0, 80, 157, 0.15);
+            --shadow-sm: 0 4px 20px -2px rgba(0, 80, 157, 0.08);
+            --shadow-hover: 0 20px 35px -8px rgba(0, 80, 157, 0.25);
+
+            --nav-bg: rgba(15, 23, 42, 0.92);
+            --nav-text: #ffffff;
+            --nav-text-sub: #cbd5e1;
+            --nav-border: rgba(255, 255, 255, 0.1);
+            --nav-hover: #38bdf8;
+
+            --stats-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(0, 80, 157, 0.9) 100%);
+            --stats-text: #ffffff;
+            --stats-subtext: #cbd5e1;
+            --stats-border: rgba(255, 255, 255, 0.15);
+            --stats-icon-bg: rgba(0, 128, 128, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #090d16;
+            --bg-surface: rgba(15, 23, 42, 0.85);
+            --bg-card: rgba(15, 23, 42, 0.94);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --accent-glow: rgba(0, 128, 128, 0.25);
+            --shadow-sm: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
+            --shadow-hover: 0 20px 35px -8px rgba(0, 128, 128, 0.4);
+
+            --nav-bg: rgba(9, 13, 22, 0.95);
+            --nav-text: #f8fafc;
+            --nav-text-sub: #cbd5e1;
+            --nav-border: rgba(255, 255, 255, 0.1);
+            --nav-hover: #2a9d8f;
+
+            --stats-bg: linear-gradient(135deg, rgba(2, 6, 23, 0.94) 0%, rgba(0, 80, 157, 0.94) 100%);
+            --stats-text: #ffffff;
+            --stats-subtext: #cbd5e1;
+            --stats-border: rgba(255, 255, 255, 0.12);
+            --stats-icon-bg: rgba(0, 128, 128, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00509d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #008080;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        section {
+            scroll-margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        section > .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            max-width: 1380px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #00509d 0%, #008080 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            background: rgba(0, 80, 157, 0.15);
+            color: #00509d;
+            font-size: 11.5px;
+            font-weight: 700;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(0, 80, 157, 0.3);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        [data-theme="dark"] .badge {
+            color: #2a9d8f;
+            background: rgba(0, 128, 128, 0.2);
+            border-color: rgba(0, 128, 128, 0.4);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--text-primary);
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .section-header .sub-title {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 720px;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+
+        /* NAVBAR & LOGO */
+        .navbar {
+            position: sticky;
+            top: 0;
+            min-height: 75px;
+            background: var(--nav-bg);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--nav-border);
+            z-index: 1000;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1380px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--nav-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+        .logo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-tagline {
+            font-size: 9px;
+            font-weight: 700;
+            color: #008080;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #00509d 0%, #008080 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0, 80, 157, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-search-input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--nav-border);
+            padding: 8px 14px 8px 36px;
+            border-radius: 20px;
+            color: var(--nav-text);
+            font-size: 13.5px;
+            font-family: inherit;
+            outline: none;
+            width: 170px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-search-input::placeholder {
+            color: var(--nav-text-sub);
+            opacity: 0.7;
+        }
+
+        .nav-search-input:focus {
+            width: 200px;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: #008080;
+            box-shadow: 0 0 12px rgba(0, 128, 128, 0.45);
+        }
+
+        .nav-search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--nav-text-sub);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--nav-text-sub);
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--nav-hover);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--nav-hover);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--nav-border);
+            color: var(--nav-text);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.18);
+            color: var(--nav-hover);
+            border-color: var(--nav-hover);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none; 
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--nav-border);
+            color: var(--nav-text);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: var(--nav-hover);
+            border-color: var(--nav-hover);
+        }
+
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 2500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-drawer-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid var(--nav-border);
+            z-index: 2600;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+            transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-drawer.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--nav-border);
+        }
+
+        .drawer-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--nav-text);
+        }
+
+        .drawer-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--nav-border);
+            color: var(--nav-text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .drawer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .drawer-links a {
+            text-decoration: none;
+            color: var(--nav-text-sub);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-links a i {
+            color: #008080;
+            font-size: 16px;
+        }
+
+        .drawer-links a:hover {
+            color: var(--nav-hover);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.2px;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtagline {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00509d;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+
+        [data-theme="dark"] .hero-subtagline {
+            color: #2a9d8f;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 600;
+        }
+
+        .hero-btns {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #00509d 0%, #008080 100%);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            box-shadow: 0 10px 25px -5px rgba(0, 80, 157, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(0, 80, 157, 0.6);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            border-color: #00509d;
+            color: #00509d;
+        }
+
+        /* GRID SYSTEM & CARDS (Updated Compact Grid to match Contact Us layout style) */
+        .card-grid {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 22px 18px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .card::before, .product-card::before, .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 128, 128, 0.12), transparent 40%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .card:hover::before, .product-card:hover::before, .contact-card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 128, 128, 0.5);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #00509d 0%, #008080 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 15px -3px rgba(0, 80, 157, 0.35);
+            z-index: 2;
+        }
+
+        .card h3, .card p {
+            z-index: 2;
+            position: relative;
+        }
+
+        .card h3 {
+            margin: 0 0 6px 0;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 128, 128, 0.5);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0;
+            position: relative;
+        }
+
+        [data-theme="dark"] .product-image-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.12));
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.1);
+        }
+
+        .badge-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .animated-badge {
+            font-size: 9.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .badge-bestseller {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            animation: pulseGold 2s infinite;
+        }
+
+        .badge-hotdeal {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulseRed 1.8s infinite;
+        }
+
+        .badge-discount {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            animation: pulseGreen 2s infinite;
+        }
+
+        .badge-warranty {
+            background: linear-gradient(135deg, #00509d 0%, #008080 100%);
+        }
+
+        @keyframes pulseGold {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .quick-view-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: 5;
+        }
+
+        .product-card:hover .quick-view-overlay {
+            opacity: 1;
+        }
+
+        .quick-view-btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0f172a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .quick-view-btn {
+            transform: translateY(0);
+        }
+
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            z-index: 2;
+            position: relative;
+        }
+
+        .product-tag {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #00509d;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        [data-theme="dark"] .product-tag {
+            color: #2a9d8f;
+        }
+
+        .product-title {
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .product-price {
+            font-size: 19px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .old-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ef4444;
+            text-decoration: line-through;
+            opacity: 0.85;
+        }
+
+        .btn-inquire {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #25D366;
+            color: #ffffff;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-inquire:hover {
+            background: #1ebc57;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .no-results-box {
+            display: none;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border-radius: 18px;
+            border: 1px dashed var(--border-color);
+            margin: 10px 0;
+        }
+
+        .no-results-box i {
+            font-size: 42px;
+            color: #00509d;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .no-results-box h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .no-results-box p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 16px;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .modal-image-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+            min-height: 320px;
+        }
+
+        [data-theme="dark"] .modal-image-box {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .modal-image-box img {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+        }
+
+        .modal-image-box:hover img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.2));
+        }
+
+        .modal-content-box {
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .modal-price-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .modal-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .modal-old-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ef4444;
+            text-decoration: line-through;
+        }
+
+        .modal-description {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .modal-specs {
+            list-style: none;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-specs li {
+            font-size: 12.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .modal-specs li i {
+            color: #00509d;
+            font-size: 14px;
+        }
+
+        [data-theme="dark"] .modal-specs li i {
+            color: #2a9d8f;
+        }
+
+        /* STATS & CONTACT */
+        .stats-horizontal-bar {
+            margin-top: 25px;
+            background: var(--stats-bg);
+            border: 1px solid var(--stats-border);
+            border-radius: 20px;
+            padding: 20px 30px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .stat-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--stats-icon-bg);
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid var(--stats-border);
+        }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--stats-text);
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--stats-subtext);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 2px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 35px;
+            background: var(--stats-border);
+        }
+
+        .contact-box {
+            text-align: center;
+            padding: 22px 20px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(0, 80, 157, 0.92) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            color: #ffffff;
+            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-box h3 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .contact-box p {
+            color: #cbd5e1;
+            margin: 0;
+            font-size: 13.5px;
+            max-width: 550px;
+            font-weight: 500;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: #ffffff;
+            padding: 10px 24px;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            border-radius: 40px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebc57;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 18px 14px;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 128, 128, 0.5);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .contact-card .icon-box {
+            width: 38px;
+            height: 38px;
+            font-size: 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .contact-card h3 {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .contact-card .contact-val {
+            font-size: 13px;
+            font-weight: 700;
+            color: #00509d;
+            margin: 4px 0 10px 0;
+            word-break: break-word;
+            z-index: 2;
+            position: relative;
+        }
+
+        [data-theme="dark"] .contact-card .contact-val {
+            color: #2a9d8f;
+        }
+
+        .contact-card h3, .contact-card .icon-box, .contact-card .btn-action {
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn-action {
+            display: inline-block;
+            padding: 4px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #00509d;
+            border: 1px solid #00509d;
+            border-radius: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] .btn-action {
+            color: #2a9d8f;
+            border-color: #2a9d8f;
+        }
+
+        .contact-card:hover .btn-action {
+            background: #00509d;
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .contact-card:hover .btn-action {
+            background: #2a9d8f;
+            color: #090d16;
+        }
+
+        .floating-wa {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 28px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            animation: pulseGlow 2s infinite;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .floating-wa:hover {
+            transform: scale(1.1);
+            background-color: #1ebc57;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        footer {
+            background: #090d16;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px 24px;
+            font-size: 13.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .footer-socials a {
+            color: #94a3b8;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: #38bdf8;
+        }
+
+        @media (max-width: 1200px) {
+            .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 992px) {
+            .nav-search-input { width: 140px; }
+            .nav-search-input:focus { width: 170px; }
+            .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 8px 10px; }
+            .nav-container { gap: 4px; justify-content: space-between; }
+            .brand-name { font-size: 12.5px; }
+            .brand-tagline { font-size: 6px; letter-spacing: 0.3px; display: none; }
+            .logo-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 8px; }
+            .logo { gap: 6px; }
+            
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; width: 32px; height: 32px; font-size: 13px; }
+            .theme-toggle-btn { width: 32px; height: 32px; font-size: 12px; }
+            
+            .nav-right { gap: 8px; }
+            .nav-search-box { width: 105px; }
+            .nav-search-input { width: 100%; font-size: 11px; padding: 5px 8px 5px 26px; }
+            .nav-search-input:focus { width: 120px; }
+            .nav-search-icon { left: 8px; font-size: 10px; }
+            
+            section { 
+                min-height: auto; 
+                padding: 60px 0; 
+                border-bottom: 1px solid var(--border-color);
+            }
+            .container { padding: 0 16px; }
+            .hero { padding: 40px 0 60px 0; }
+            .hero h1 { font-size: 26px; line-height: 1.2; }
+            .hero p { font-size: 13.5px; }
+            .section-header { margin-bottom: 25px; }
+            .section-header h2 { font-size: 22px; }
+            .section-header .sub-title { font-size: 13px; }
+            
+            .card-grid { 
+                grid-template-columns: repeat(2, minmax(0, 1fr)); 
+                gap: 12px; 
+            }
+            .product-card {
+                border-radius: 14px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            .product-image-container {
+                height: 150px;
+            }
+            .product-info {
+                padding: 12px;
+            }
+            .product-title {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+            .product-description {
+                font-size: 11px;
+                margin-bottom: 8px;
+                line-height: 1.3;
+            }
+            .price-box {
+                margin-bottom: 8px;
+                gap: 6px;
+            }
+            .product-price {
+                font-size: 13.5px;
+            }
+            .old-price {
+                font-size: 10px;
+            }
+            .animated-badge {
+                font-size: 8px;
+                padding: 2px 5px;
+            }
+            .badge-container {
+                top: 6px;
+                left: 6px;
+                right: 6px;
+                gap: 3px;
+            }
+            .btn-inquire {
+                width: 100%;
+                justify-content: center;
+                padding: 7px 6px;
+                font-size: 11px;
+                gap: 4px;
+                border-radius: 20px;
+            }
+
+            .contact-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+            .contact-card {
+                padding: 14px 10px;
+                border-radius: 14px;
+            }
+            .contact-card .icon-box {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            .contact-card h3 {
+                font-size: 12px;
+            }
+            .contact-card .contact-val {
+                font-size: 11.5px;
+                margin: 3px 0 8px 0;
+            }
+            .contact-card .btn-action {
+                padding: 3px 10px;
+                font-size: 10.5px;
+            }
+
+            .stats-horizontal-bar { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .stat-divider { display: none; }
+            .stat-nav-item { width: 100%; }
+            .floating-wa { bottom: 20px; right: 20px; width: 48px; height: 48px; font-size: 24px; }
+            .modal-card { grid-template-columns: 1fr; max-height: 85vh; overflow-y: auto; }
+            .modal-image-box { border-right: none; border-bottom: 1px solid var(--border-color); padding: 0; }
+            .modal-content-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Open Menu">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div class="logo-text-wrapper">
+                        <span class="brand-name">NEATMAX SCALE</span>
+                        <span class="brand-tagline">Neat Accuracy | Max Durability</span>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="nav-right">
+                <div class="nav-search-box">
+                    <i class="fa-solid fa-magnifying-glass nav-search-icon"></i>
+                    <input type="text" class="nav-search-input" placeholder="Search products...">
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#technologies">Technologies</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+                
+                <button class="theme-toggle-btn" id="themeToggle" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="drawer-title">Navigation Menu</span>
+            <button class="drawer-close-btn" id="drawerCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="drawer-links">
+            <li><a href="#products" class="drawer-link"><i class="fa-solid fa-box"></i> Products</a></li>
+            <li><a href="#about" class="drawer-link"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+            <li><a href="#services" class="drawer-link"><i class="fa-solid fa-screwdriver-wrench"></i> Services</a></li>
+            <li><a href="#technologies" class="drawer-link"><i class="fa-solid fa-microchip"></i> Technologies</a></li>
+            <li><a href="#contact" class="drawer-link"><i class="fa-solid fa-envelope"></i> Contact Us</a></li>
+        </ul>
+    </div>
+
+    <a href="https://wa.me/94778122654?text=Hello!%20I%20need%20assistance%20with%20weighing%20scales." class="floating-wa" target="_blank" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <section class="hero">
+        <div class="container" data-aos="fade-up" data-aos-duration="1000">
+            <div class="hero-content">
+                <span class="badge"><i class="fa-solid fa-star"></i> Precision & Trust Since 1995</span>
+                <h1>High-Precision Electronic <br><span class="text-gradient">Weighing Solutions</span></h1>
+                <div class="hero-subtagline">Neat Accuracy | Max Durability</div>
+                <p>Leading Sri Lanka's industrial & commercial sector with licensed, high-accuracy weighing instruments and guaranteed repair services.</p>
+                <div class="hero-btns">
+                    <a href="#products" class="btn-primary"><i class="fa-solid fa-cart-shopping"></i> View Products</a>
+                    <a href="#contact" class="btn-secondary"><i class="fa-solid fa-phone"></i> Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge"><i class="fa-solid fa-tag"></i> Licensed Scales</span>
+                <h2>Our Featured Collection</h2>
+                <p class="sub-title">Explore our range of licensed electronic weighing instruments designed for high precision and durability.</p>
+            </div>
+
+            <div class="card-grid">
+                
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100"
+                     data-title="Royal - 15kg Scale" 
+                     data-price="Rs. 18,700" 
+                     data-oldprice="Rs. 22,000"
+                     data-image="royal ori.jpg" 
+                     data-description="High precision licensed electronic weighing scale specially crafted for daily retail, grocery, and general commercial usage."
+                     data-specs="15kg Max Capacity | High Precision Sensor | Dual Display Panels | Built-in Rechargeable Battery | 1 Year Full Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2018,700).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount"><i class="fa-solid fa-percent"></i> 15% OFF</span>
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-crown"></i> BEST SELLER</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 1Y WARRANTY</span>
+                        </div>
+                        <img src="royal ori.jpg" alt="Royal-15kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">Royal - 15kg</h3>
+                            <p class="product-description">Licensed scale for accurate daily commercial & retail weighing needs with dual display.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 18,700</span>
+                                <span class="old-price">Rs. 22,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Royal-15kg%20scale%20(Rs.%2018,700)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="120"
+                     data-title="ALDA - 30kg Scale" 
+                     data-price="Rs. 32,000" 
+                     data-image="ALDA30.jpeg" 
+                     data-description="Professional licensed electronic computing scale with high-capacity 30kg weighing, triple green LCD displays, and robust build for commercial retail use."
+                     data-specs="30kg Max Capacity | Licensed Commercial Scale | Triple LED Display Panels | Built-in Rechargeable Battery | 1 Year Full Warranty | 6 Month Battery Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20ALDA-30kg%20scale%20(Rs.%2032,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-crown"></i> LICENSED 30KG</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 1Y WARRANTY</span>
+                        </div>
+                        <img src="ALDA30.jpeg" alt="ALDA 30kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">ALDA - 30kg</h3>
+                            <p class="product-description">Professional licensed scale with 30kg capacity and bright triple display for accurate retail and shop measurements.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 32,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20ALDA-30kg%20scale%20(Rs.%2032,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="300"
+                     data-title="JHAFZYS - 40kg Scale" 
+                     data-price="Rs. 8,000" 
+                     data-oldprice="Rs. 8,500"
+                     data-image="scale2.jpg" 
+                     data-description="Compact and reliable weighing scale designed for house working and everyday light tasks."
+                     data-specs="40kg Max Capacity | 2g Precision | For House Working | 3 Months Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20JHAFZYS-40kg%20scale%20(Rs.%208,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount"><i class="fa-solid fa-percent"></i> 6% OFF</span>
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> HOT DEAL</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 3M WARRANTY</span>
+                        </div>
+                        <img src="scale2.jpg" alt="JHAFZYS-40kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-scale-unbalanced"></i> No License Scale</span>
+                            <h3 class="product-title">JHAFZYS - 40kg</h3>
+                            <p class="product-description">Ideal compact scale for house working and domestic weighing tasks.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 8,000</span>
+                                <span class="old-price">Rs. 8,500</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20JHAFZYS-40kg%20scale%20(Rs.%208,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="400"
+                     data-title="HANA - 40kg Scale" 
+                     data-price="Rs. 8,000" 
+                     data-oldprice="Rs. 9,000"
+                     data-image="scale1.jpg" 
+                     data-description="Reliable compact weighing scale designed for house working and domestic tasks."
+                     data-specs="40kg Max Capacity | High Precision 5g | For House Working | 3 Months Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20HANA-40kg%20scale%20(Rs.%208,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount"><i class="fa-solid fa-percent"></i> 10% OFF</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 3M WARRANTY</span>
+                        </div>
+                        <img src="scale1.jpg" alt="HANA-40kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-scale-unbalanced"></i> Domestic Scale</span>
+                            <h3 class="product-title">HANA - 40kg</h3>
+                            <p class="product-description">Compact scale ideal for house working and everyday weighing needs.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 8,000</span>
+                                <span class="old-price">Rs. 9,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20HANA-40kg%20scale%20(Rs.%208,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="150"
+                     data-title="ALDA - 15kg/2g Scale" 
+                     data-price="Rs. 23,000" 
+                     data-image="ALDA15.jpeg" 
+                     data-description="Professional licensed electronic computing scale with high precision 2g increments, triple green LCD displays, and robust build for commercial retail use."
+                     data-specs="15kg Max Capacity | 2g High Precision | Licensed Scale | 1 Year Full Warranty | 6 Month Battery Warranty | Dual LED Displays"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20ALDA-15kg%20scale%20(Rs.%2023,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-crown"></i> LICENSED SCALE</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 1Y WARRANTY</span>
+                        </div>
+                        <img src="ALDA15.jpeg" alt="ALDA 15kg/2g Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">ALDA - 15kg/2g</h3>
+                            <p class="product-description">Licensed professional scale with 2g precision and clear triple display for commercial retail environments.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 23,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20ALDA-15kg%20scale%20(Rs.%2023,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="180"
+                     data-title="JHAFZYS - 150kg Scale" 
+                     data-price="Rs. 16,000" 
+                     data-image="JHAFZYS150.jpeg" 
+                     data-description="Heavy-duty licensed platform scale engineered with robust structure and clear bright LED displays for accurate commercial and industrial measurements."
+                     data-specs="150kg Max Capacity | Licensed Commercial Scale | Bright Triple LED Display | Rechargeable Battery | 3 Months Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20JHAFZYS-150kg%20scale%20(Rs.%2016,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-shield-check"></i> LICENSED 150KG</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 3M WARRANTY</span>
+                        </div>
+                        <img src="JHAFZYS150.jpeg" alt="JHAFZYS - 150kg Scale">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">JHAFZYS - 150kg</h3>
+                            <p class="product-description">Heavy-duty licensed platform scale engineered for reliable commercial and industrial high-capacity weighing.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 16,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20JHAFZYS-150kg%20scale%20(Rs.%2016,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="200"
+                     data-title="SOLID - 150kg Industrial Scale" 
+                     data-price="Rs. 95,400" 
+                     data-oldprice="Rs. 106,000"
+                     data-image="converted.jpg" 
+                     data-description="Heavy-duty industrial platform scale built with durable alloy steel and robust load-cell for maximum stability and heavy-capacity weighing."
+                     data-specs="150kg Max Capacity | Alloy Steel Platform | Weather-proof Housing | 120 Hours Battery Backup | 1 Year Full Warranty"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,400).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-discount"><i class="fa-solid fa-percent"></i> 10% OFF</span>
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> HOT DEAL</span>
+                            <span class="animated-badge badge-warranty"><i class="fa-solid fa-shield-check"></i> 1Y WARRANTY</span>
+                        </div>
+                        <img src="converted.jpg" alt="SOLID-150kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Licensed Model</span>
+                            <h3 class="product-title">SOLID - 150kg</h3>
+                            <p class="product-description">Licensed heavy-duty scale engineered for high-capacity industrial weighing.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 95,400</span>
+                                <span class="old-price">Rs. 106,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20SOLID-150kg%20scale%20(Rs.%2095,400)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100"
+                     data-title="Pocket Scale - Jewellery (600g)" 
+                     data-price="Rs. 2,400" 
+                     data-image="scale8.jpg" 
+                     data-description="Precision down to the milligram. Engineered for accurate gold, gemstone, and precious metal measurements you can completely trust."
+                     data-specs="600g Max Capacity | Milligram Precision | For Gold & Gemstones | Compact Pocket Design"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Pocket%20Scale%20Jewellery%20600g%20(Rs.%202,400).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-gem"></i> JEWELLERY SPECIAL</span>
+                        </div>
+                        <img src="scale8.jpg" alt="Pocket Scale Jewellery 600g">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-gem"></i> Jewellery Scale</span>
+                            <h3 class="product-title">Pocket Scale - Jewellery (600g)</h3>
+                            <p class="product-description">Precision down to the milligram. Engineered for accurate gold, gemstone, and precious metal measurements you can completely trust.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 2,400</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Pocket%20Scale%20Jewellery%20600g%20(Rs.%202,400)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 9th Item Added Here: Crane - 300kg -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="220"
+                     data-title="Crane - 300kg" 
+                     data-price="Rs. 7,000" 
+                     data-image="scale4.jpg" 
+                     data-description="Heavy-duty digital crane scale engineered with high-capacity 300kg weighing and a bright LCD display, powered by 3 pen-torch batteries for reliable portable use."
+                     data-specs="300kg Max Capacity | Powered by 3 Pen-torch Batteries | Heavy Duty Hanging Hooks | Clear Digital LCD Display"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Crane-300kg%20scale%20(Rs.%207,000).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> CRANE SCALE</span>
+                        </div>
+                        <img src="scale4.jpg" alt="Crane 300kg Scale">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-weight-scale"></i> Crane Scale</span>
+                            <h3 class="product-title">Crane - 300kg</h3>
+                            <p class="product-description">Heavy-duty digital crane scale with 300kg capacity, powered by 3 pen-torch batteries.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 7,000</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Crane-300kg%20scale%20(Rs.%207,000)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="200"
+                     data-title="Hanging White - 100kg" 
+                     data-price="Rs. 1,800" 
+                     data-image="scale7.jpg" 
+                     data-description="Durable and portable mechanical hanging scale designed for quick and reliable heavy load measurements up to 100kg."
+                     data-specs="100kg Max Capacity | Heavy Duty Hanging Scale | Portable & Compact Design | Easy-to-Read Dial Face"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20White%20100kg%20scale%20(Rs.%201,800).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> HANGING SCALE</span>
+                        </div>
+                        <img src="scale7.jpg" alt="Hanging White 100kg">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-weight-scale"></i> Hanging Scale</span>
+                            <h3 class="product-title">Hanging White - 100kg</h3>
+                            <p class="product-description">Durable and portable mechanical hanging scale designed for quick and reliable heavy load measurements up to 100kg.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 1,800</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20White%20100kg%20scale%20(Rs.%201,800)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="250"
+                     data-title="Hanging Gold - 50kg" 
+                     data-price="Rs. 900" 
+                     data-image="HANGING50_2.jpeg" 
+                     data-description="Compact mechanical pocket balance and hanging scale designed for precise portable weight measurements up to 50kg."
+                     data-specs="50kg Max Capacity | Portable Pocket Balance | Heavy Duty Hanging Hook | Robust Gold-Tone Finish"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20Gold%2050kg%20scale%20(Rs.%20900).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> 50KG POCKET</span>
+                        </div>
+                        <img src="HANGING50.jpeg" alt="Hanging Gold 50kg">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-weight-scale"></i> Hanging Scale</span>
+                            <h3 class="product-title">Hanging Gold - 50kg</h3>
+                            <p class="product-description">Compact mechanical pocket balance and hanging scale designed for precise portable weight measurements up to 50kg.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 900</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20Gold%2050kg%20scale%20(Rs.%20900)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="300"
+                     data-title="Hanging Gold - 100kg" 
+                     data-price="Rs. 1,400" 
+                     data-image="scale6.jpg" 
+                     data-description="Designed to accurately measure weights up to a maximum of 100 kg, making it ideal for commercial, agricultural, and heavy household weighing needs."
+                     data-specs="100kg Max Capacity | Heavy Duty Hanging Hook | Robust Body Construction | Clear Dial Face Display"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20Gold%20100kg%20scale%20(Rs.%201,400).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-hotdeal"><i class="fa-solid fa-fire"></i> 100KG MAX</span>
+                        </div>
+                        <img src="scale6.jpg" alt="Hanging Gold 100kg">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-weight-scale"></i> Hanging Scale</span>
+                            <h3 class="product-title">Hanging Gold - 100kg</h3>
+                            <p class="product-description">Designed to accurately measure weights up to a maximum of 100 kg, making it ideal for commercial, agricultural, and heavy household weighing needs.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 1,400</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Hanging%20Gold%20100kg%20scale%20(Rs.%201,400)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="400"
+                     data-title="Kitchen Scale - 10kg" 
+                     data-price="Rs. 1,700" 
+                     data-image="scale10.jpg" 
+                     data-description="Compact and highly accurate digital kitchen scale designed for daily baking, cooking, and precise ingredient portioning."
+                     data-specs="10kg Max Capacity | High Precision Sensor | Tare Function | LCD Display | Compact & Lightweight"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Kitchen%20Scale%2010kg%20(Rs.%201,700).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-utensils"></i> KITCHEN SPECIAL</span>
+                        </div>
+                        <img src="scale10.jpg" alt="Kitchen Scale 10kg">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-weight-scale"></i> Kitchen Scale</span>
+                            <h3 class="product-title">Kitchen Scale - 10kg</h3>
+                            <p class="product-description">Compact and highly accurate digital kitchen scale designed for daily baking, cooking, and precise ingredient portioning.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 1,700</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Kitchen%20Scale%2010kg%20(Rs.%201,700)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="fade-up" data-aos-delay="500"
+                     data-title="Kitchen Scale - 10Kg" 
+                     data-price="Rs. 1,100" 
+                     data-image="scale15.webp" 
+                     data-description="Suitable for kitchen use, featuring a maximum capacity of 10kg for reliable daily cooking and baking measurements."
+                     data-specs="10kg Max Capacity | Suitable For Kitchen | High Precision Sensor | Compact Design"
+                     data-wa="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Kitchen%20Scale%2010Kg%20(Rs.%201,100).">
+                    
+                    <div class="product-image-container">
+                        <div class="badge-container">
+                            <span class="animated-badge badge-bestseller"><i class="fa-solid fa-utensils"></i> KITCHEN ESSENTIAL</span>
+                        </div>
+                        <img src="scale15.webp" alt="Kitchen Scale - 10Kg">
+                        <div class="quick-view-overlay">
+                            <span class="quick-view-btn"><i class="fa-solid fa-eye"></i> Quick View</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span class="product-tag"><i class="fa-solid fa-utensils"></i> Kitchen Scale</span>
+                            <h3 class="product-title">Kitchen Scale - 10Kg</h3>
+                            <p class="product-description">Suitable for kitchen, max 10kg capacity for everyday food and ingredient measurements.</p>
+                            <div class="price-box">
+                                <span class="product-price">Rs. 1,100</span>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/94778122654?text=Hi,%20I'm%20interested%20in%20buying%20the%20Kitchen%20Scale%2010Kg%20(Rs.%201,100)." target="_blank" class="btn-inquire">
+                            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <div class="no-results-box" id="noResults">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i>
+                    <h3>No Results Found</h3>
+                    <p>We couldn't find any scale matching your search query. Please try searching another term.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-image-box">
+                <img src="" id="modalImg" alt="Product Image">
+            </div>
+            <div class="modal-content-box">
+                <div>
+                    <span class="product-tag"><i class="fa-solid fa-shield-check"></i> Certified Precision Scale</span>
+                    <h3 class="modal-title" id="modalTitle">Product Title</h3>
+                    <div class="modal-price-box">
+                        <span class="modal-price" id="modalPrice">Rs. 0</span>
+                        <span class="modal-old-price" id="modalOldPrice" style="display:none;">Rs. 0</span>
+                    </div>
+                    <p class="modal-description" id="modalDesc">Product description here...</p>
+                    
+                    <ul class="modal-specs" id="modalSpecs">
+                    </ul>
+                </div>
+                <a href="#" id="modalWaBtn" target="_blank" class="btn-inquire" style="width: 100%; text-align: center; justify-content: center; padding: 12px;">
+                    <i class="fa-brands fa-whatsapp"></i> Order Now via WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT US SECTION -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge"><i class="fa-solid fa-building-user"></i> Trusted Partner</span>
+                <h2>Why Choose NEATMAX Scales?</h2>
+                <p class="sub-title">With over 30 years of industry leadership, we deliver zero-error electronic weighing systems across Sri Lanka.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box"><i class="fa-solid fa-award"></i></div>
+                    <h3>30+ Years Experience</h3>
+                    <p>Three decades of expertise in supplying, repairing, and calibrating precision electronic scales.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>Zero Error Precision</h3>
+                    <p>Engineered for maximum accuracy to protect your business profits and customer trust.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
+                    <h3>Islandwide Service</h3>
+                    <p>Dependable support and rapid maintenance services provided across Sri Lanka.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>Licensed Quality</h3>
+                    <p>Certified instruments fully compliant with national legal metrology regulations.</p>
+                </div>
+            </div>
+
+            <div class="stats-horizontal-bar" data-aos="zoom-in" data-aos-duration="800">
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Scale Models</span>
+                    </div>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">12K+</span>
+                        <span class="stat-label">Happy Clients</span>
+                    </div>
+                </div>
+
+                <div class="stat-divider"></div>
+
+                <div class="stat-nav-item">
+                    <div class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number">1 Year</span>
+                        <span class="stat-label">Full Warranty</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge"><i class="fa-solid fa-screwdriver-wrench"></i> Expert Care</span>
+                <h2>Our Specialized Services</h2>
+                <p class="sub-title">We provide precise calibration and fast repair services for all types of electronic weighing scales.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Expert Repairs</h3>
+                    <p>Technical issues diagnosed and accurately fixed with a 100% service guarantee.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3>Precision Calibration</h3>
+                    <p>On-site fine-tuning to ensure absolute compliance with government standards.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h3>On-Demand Support</h3>
+                    <p>Fast doorstep delivery and inspection for commercial facilities.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-box"><i class="fa-solid fa-headset"></i></div>
+                    <h3>24/7 Consultation</h3>
+                    <p>Expert technical advice and assistance whenever your business needs it.</p>
+                </div>
+            </div>
+
+            <div class="contact-box" data-aos="fade-up" data-aos-duration="800">
+                <h3>Need Scale Repairs or Calibration?</h3>
+                <p>Reach out directly to our senior technician team via WhatsApp for instant support.</p>
+                <a href="https://wa.me/94778122654?text=Hello!%20I%20need%20repair/calibration%20support%20for%20my%20scale." target="_blank" class="btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Chat with Technician
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNOLOGIES SECTION -->
+    <section id="technologies">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge"><i class="fa-solid fa-microchip"></i> Modern Hardware</span>
+                <h2>Advanced Weighing Tech</h2>
+                <p class="sub-title">High-sensitivity strain gauges and microcontrollers driving reliable measurements.</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>High-Precision Load Cells</h3>
+                    <p>Resilient alloy steel sensors delivering micro-gram accuracy under heavy loads.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box"><i class="fa-solid fa-battery-full"></i></div>
+                    <h3>Long-Life Battery Backup</h3>
+                    <p>Built-in rechargeable power supply supporting up to 120 hours of operation.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box"><i class="fa-solid fa-desktop"></i></div>
+                    <h3>Dual LED Displays</h3>
+                    <p>Bright, anti-glare display panels facing both operator and buyer.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-box"><i class="fa-solid fa-wifi"></i></div>
+                    <h3>Smart Connectivity</h3>
+                    <p>Seamless data ports for integration with modern POS and printing systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="badge"><i class="fa-solid fa-envelope"></i> Get In Touch</span>
+                <h2>Contact Us</h2>
+                <p class="sub-title">Have questions about our scale inventory or technical servicing? We're here to help.</p>
+            </div>
+
+            <div class="contact-grid">
+                <a href="tel:+94778122654" class="contact-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box" style="background: #0ea5e9;">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3>Phone Support</h3>
+                    <div class="contact-val">+94 77 812 2654</div>
+                    <span class="btn-action">Call Now</span>
+                </a>
+
+                <a href="https://wa.me/94778122654" target="_blank" class="contact-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box" style="background: #25D366;">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp Direct</h3>
+                    <div class="contact-val">+94 77 812 2654</div>
+                    <span class="btn-action">Message</span>
+                </a>
+
+                <a href="mailto:wmtscale@gmail.com" class="contact-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box" style="background: #EA4335;">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3>Email Support</h3>
+                    <div class="contact-val">wmtscale@gmail.com</div>
+                    <span class="btn-action">Email Us</span>
+                </a>
+
+                <a href="https://www.facebook.com/profile.php?id=61592244667836" target="_blank" class="contact-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-box" style="background: #1877F2;">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <h3>Facebook Page</h3>
+                    <div class="contact-val">Neatmax Scale</div>
+                    <span class="btn-action">Visit Page</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NEATMAX SCALE . All Rights Reserved.</p>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/profile.php?id=61592244667836" target="_blank" title="Facebook Page"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://wa.me/94778122654?text=Hello!%20I%20need%20assistance%20with%20weighing%20scales." target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+    </footer>
+
+    <!-- AOS Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function openDrawer() {
+            mobileDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeDrawer() {
+            mobileDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        mobileMenuBtn.addEventListener('click', openDrawer);
+        drawerCloseBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+
+        const interactiveCards = document.querySelectorAll('.card, .product-card, .contact-card');
+        interactiveCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        const searchInput = document.querySelector('.nav-search-input');
+        const productCards = document.querySelectorAll('.product-card');
+        const productsSection = document.getElementById('products');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            if (searchTerm.length > 0) {
+                productsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                const description = card.querySelector('.product-description').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+
+        const modal = document.getElementById('productModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalOldPrice = document.getElementById('modalOldPrice');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalSpecs = document.getElementById('modalSpecs');
+        const modalWaBtn = document.getElementById('modalWaBtn');
+
+        productCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-inquire')) return;
+
+                const title = card.getAttribute('data-title');
+                const price = card.getAttribute('data-price');
+                const oldprice = card.getAttribute('data-oldprice');
+                const image = card.getAttribute('data-image');
+                const desc = card.getAttribute('data-description');
+                const specs = card.getAttribute('data-specs').split('|');
+                const waUrl = card.getAttribute('data-wa');
+
+                modalTitle.textContent = title;
+                modalPrice.textContent = price;
+                if (oldprice) {
+                    modalOldPrice.textContent = oldprice;
+                    modalOldPrice.style.display = 'inline';
+                } else {
+                    modalOldPrice.style.display = 'none';
+                }
+                modalImg.src = image;
+                modalDesc.textContent = desc;
+                modalWaBtn.href = waUrl;
+
+                modalSpecs.innerHTML = '';
+                specs.forEach(spec => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${spec.trim()}`;
+                    modalSpecs.appendChild(li);
+                });
+
+                modal.classList.add('active');
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
